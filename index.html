@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Jumers House – ແອດມິນ</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&family=Noto+Sans+Lao:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ebeae6;--ink:#1b3555;--card:#f7f6f2;--sale:#f2d45c;--mute:#5d6f86;--line:#d3d1ca;--ok:#2f8f5b;--bad:#c0392b}
+@media(prefers-color-scheme:dark){:root{--bg:#10192a;--ink:#ebeae6;--card:#182742;--mute:#9db0c8;--line:#2a3b58}}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Noto Sans Lao',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:env(safe-area-inset-top,0) 0 40px}
+h1,h2{font-family:'Bricolage Grotesque','Noto Sans Lao',sans-serif}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+input,select,textarea{font:inherit;width:100%;padding:11px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+:focus-visible{outline:3px solid var(--sale);outline-offset:2px}
+.wrap{max-width:900px;margin:auto;padding:0 14px}
+.top{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px;height:56px}
+.top h1{font-size:18px;flex:1}
+.btn{background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-weight:700}
+.btn.alt{background:var(--sale);color:#1b3555}.btn.bad{background:var(--bad);color:#fff}
+.tabs{display:flex;gap:6px;padding:10px 0;overflow-x:auto}
+.tab{padding:8px 16px;border:1.5px solid var(--ink);border-radius:99px;font-weight:600;white-space:nowrap}
+.tab.on{background:var(--ink);color:var(--bg)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}
+@media(min-width:700px){.cards{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--card);border-radius:16px;padding:14px}.stat b{display:block;font-size:24px;font-family:'Bricolage Grotesque',sans-serif}.stat span{font-size:13px;color:var(--mute)}
+.box{background:var(--card);border-radius:16px;padding:14px;margin:10px 0}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.th{width:52px;height:52px;border-radius:12px;background:#fff center/contain no-repeat;flex:none;display:grid;place-items:center;position:relative}
+.grow{flex:1;min-width:0}.mute{color:var(--mute);font-size:13px}
+.pill{font-size:12px;padding:2px 10px;border-radius:99px;background:var(--sale);color:#1b3555;font-weight:700}
+.pill.off{background:var(--line);color:var(--mute)}
+.modal{position:fixed;inset:0;background:rgba(10,20,36,.55);z-index:30;display:none;align-items:flex-end;justify-content:center}
+.modal.on{display:flex}
+.panel{background:var(--bg);width:100%;max-width:640px;max-height:94vh;overflow:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom,0))}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:8px}
+.imgs .th{width:100%;height:auto;aspect-ratio:1;cursor:pointer}
+.imgs .th button{position:absolute;top:4px;right:4px;background:var(--ink);color:var(--bg);width:22px;height:22px;border-radius:50%;font-size:12px}
+.imgs .th i{position:absolute;bottom:4px;left:4px;font-style:normal;font-size:11px;background:var(--sale);color:#1b3555;padding:1px 7px;border-radius:99px;font-weight:700}
+.chk{display:flex;gap:16px;margin-top:12px}.chk label{display:flex;gap:6px;align-items:center;margin:0}.chk input{width:auto}
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:.3s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+#login{max-width:360px;margin:18vh auto;padding:0 20px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<section id="login">
+  <h1 style="font-size:34px;margin-bottom:6px">JUMERS HOUSE ✱</h1><p class="mute" style="margin-bottom:16px">ເຂົ້າລະບົບແອດມິນ</p>
+  <label>ອີເມວ</label><input id="em" type="email" autocomplete="username">
+  <label>ລະຫັດຜ່ານ</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+  <button class="btn" style="width:100%;margin-top:16px" onclick="login()">ເຂົ້າລະບົບ</button>
+</section>
+
+<div id="app" class="hide">
+<div class="top"><div class="wrap"><h1>JUMERS HOUSE ✱ ແອດມິນ</h1><button class="btn" onclick="logout()">ອອກ</button></div></div>
+<div class="wrap">
+  <div class="tabs"><button class="tab on" onclick="tab('dash',this)">ພາບລວມ</button><button class="tab" onclick="tab('prod',this)">ສິນຄ້າ</button><button class="tab" onclick="tab('sale',this)">ໂປຣໂມຊັ່ນ</button><button class="tab" onclick="tab('ord',this)">ອໍເດີ</button><button class="tab" onclick="tab('cp',this)">ໂຄ້ດສ່ວນຫຼຸດ</button><button class="tab" onclick="tab('set',this)">ຕັ້ງຄ່າຮ້ານ</button></div>
+  <div id="v-dash"></div>
+  <div id="v-prod" class="hide">
+    <div style="display:flex;gap:8px"><input id="ps" placeholder="ຄົ້ນຫາສິນຄ້າ / ບາໂຄດ…" oninput="drawProd()"><button class="btn alt" style="flex:none" onclick="editProd()">+ ເພີ່ມສິນຄ້າ</button></div>
+    <div class="box" id="plist"></div>
+  </div>
+  <div id="v-sale" class="hide"><p class="mute" style="margin:6px 0">ຕັ້ງລາຄາຫຼຸດ ແລ້ວສິນຄ້າຈະຂຶ້ນໃນສ່ວນ "ສິນຄ້າຫຼຸດລາຄາ" ຂອງໜ້າຮ້ານທັນທີ. ລຶບຄ່າອອກເພື່ອຍົກເລີກ.</p><div class="box" id="slist"></div></div>
+  <div id="v-cp" class="hide"><div class="box"><b>ສ້າງໂຄ້ດສ່ວນຫຼຸດໃໝ່</b>
+  <p class="mute">ໃຊ້ໄດ້ສະເພາະສິນຄ້າທີ່ບໍ່ໄດ້ຕັ້ງລາຄາຫຼຸດ</p>
+  <label>ໂຄ້ດ (ເຊັ່ນ JUMERS10)</label><input id="c-code" autocapitalize="characters" autocomplete="off">
+  <div class="two"><div><label>ປະເພດ</label><select id="c-type"><option value="percent">ເປີເຊັນ (%)</option><option value="fixed">ຈຳນວນເງິນ (BAHT)</option></select></div><div><label>ມູນຄ່າ</label><input id="c-val" type="number" inputmode="decimal"></div></div>
+  <div class="two"><div><label>ວັນໝົດອາຍຸ (ເປົ່າ = ບໍ່ໝົດ)</label><input id="c-exp" type="date"></div><div><label>ຈຳກັດຈຳນວນຄັ້ງ (ເປົ່າ = ບໍ່ຈຳກັດ)</label><input id="c-max" type="number" inputmode="numeric"></div></div>
+  <button class="btn" style="width:100%;margin-top:14px" onclick="saveCp()">ສ້າງໂຄ້ດ</button></div>
+  <div class="box" id="cplist"></div></div>
+  <div id="v-set" class="hide"><div class="box">
+  <h2 style="font-size:20px">ບັນຊີຮັບເງິນ</h2>
+  <label>ບັນຊີ KIP (ທະນາຄານ / ເລກບັນຊີ / ຊື່ເຈົ້າຂອງ)</label><textarea id="s-kacc" rows="3"></textarea>
+  <label>ຮູບ QR ສຳລັບ KIP</label><div id="s-kip_qr"></div><input type="file" accept="image/*" onchange="upQR('kip_qr',this)">
+  <label>ບັນຊີ BAHT / THB (ທະນາຄານ / ເລກບັນຊີ / ຊື່ເຈົ້າຂອງ)</label><textarea id="s-tacc" rows="3"></textarea>
+  <label>ຮູບ QR ສຳລັບ BAHT</label><div id="s-thb_qr"></div><input type="file" accept="image/*" onchange="upQR('thb_qr',this)">
+  <label>ອັດຕາແລກປ່ຽນ: 1 BAHT = ? KIP</label><input id="s-rate" type="number" inputmode="decimal">
+  <label>ບໍລິການຂົນສົ່ງ (ແຍກດ້ວຍ ,)</label><input id="s-car">
+  <label>ໝວດສິນຄ້າ (ແຍກດ້ວຍ , · ເຮັດເປັນແຖບໃນໜ້າຮ້ານ ຕາມລຳດັບນີ້)</label><textarea id="s-cats" rows="3"></textarea>
+  <button class="btn" style="width:100%;margin-top:16px" onclick="saveSet()">ບັນທຶກການຕັ້ງຄ່າ</button>
+</div></div>
+  <div id="v-ord" class="hide">
+    <div id="owk"></div><select id="of" onchange="drawOrd()"><option value="">ທຸກສະຖານະ</option><option value="pending">ລໍຖ້າຢືນຢັນ</option><option value="packing">ກຳລັງແພັກ</option><option value="shipped">ຈັດສົ່ງແລ້ວ</option><option value="done">ສຳເລັດ</option></select>
+    <div id="olist"></div>
+  </div>
+</div>
+</div>
+
+<div class="modal" id="m-prod" onclick="if(event.target===this)this.classList.remove('on')"><div class="panel">
+  <h2 id="mt" style="font-size:24px">ເພີ່ມສິນຄ້າ</h2>
+  <label>ຊື່ສິນຄ້າ</label><input id="f-name">
+  <div class="two"><div><label>ລາຄາ (BAHT)</label><input id="f-price" type="number" inputmode="decimal"></div><div><label>ລາຄາຫຼຸດ (SALE)</label><input id="f-sale" type="number" inputmode="decimal"></div></div>
+  <div class="two"><div><label>ຕົ້ນທຶນ (BAHT)</label><input id="f-cost" type="number" inputmode="decimal"></div><div><label>ສະຕ໊ອກລວມ</label><input id="f-stock" type="number" inputmode="numeric"></div></div>
+  <div class="two"><div><label>ໝວດໝູ່</label><select id="f-cat"></select></div><div><label>ບາໂຄດ</label><input id="f-bar"></div></div>
+  <label>ສີ (ແຍກດ້ວຍ , ເຊັ່ນ ຂາວ, ດຳ)</label><input id="f-colors" oninput="drawColorImgs()">
+  <label>ໄຊສ໌ (ແຍກດ້ວຍ , ເຊັ່ນ S, M, L)</label><input id="f-sizes">
+  <label>ຮູບສິນຄ້າ (ເລືອກໄດ້ຫຼາຍຮູບ ບໍ່ຈຳກັດ · ແຕະຮູບເພື່ອຕັ້ງເປັນຮູບຫຼັກ)</label>
+  <input type="file" accept="image/*" multiple onchange="upImgs(this)"><div class="imgs" id="imgs"></div>
+  <label>ຮູບຕາມສີ (ໃສ່ໄດ້ຫຼາຍຮູບຕໍ່ສີ ບໍ່ຈຳກັດ · ລູກຄ້າເລືອກສີແລ້ວຈະເລື່ອນເບິ່ງຮູບຂອງສີນັ້ນ)</label><div id="cimgs"></div>
+  <label>ລາຍລະອຽດ</label><textarea id="f-desc" rows="3"></textarea>
+  <div class="chk"><label><input type="checkbox" id="f-new"> ສະຕ໊ອກໃໝ່</label><label><input type="checkbox" id="f-vis" checked> ສະແດງໃນໜ້າຮ້ານ</label></div>
+  <div style="display:flex;gap:8px;margin-top:18px"><button class="btn" style="flex:1" onclick="saveProd()">ບັນທຶກ</button><button class="btn bad" id="delBtn" onclick="delProd()">ລຶບ</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== CONFIG: ໃຊ້ Supabase ໂຕດຽວກັບໜ້າຮ້ານ ===== */
+const CFG={SB_URL:'https://iealclxrqnidmcopuqca.supabase.co',SB_KEY:'sb_publishable_paLw9Ap8S-7-cprhTbHCXg_PmZM5OW5'};
+const CATS=['ເສື້ອ','ເສື້ອແຂນຍາວ','ໂສ້ງ/ກະໂປງ','ເກີບ','ຖົງຕີນ','ໝວກ','ກະເປົາ','ເຄື່ອງປະດັບ','ໂມງ','ໂມງເພື່ອສຸຂະພາບ','ສາຍ WHOOP','ສາຍ Google Fitbit','ສິນຄ້າແບນຂອງແທ້','ອື່ນໆ'];
+const ST=[['pending','ລໍຖ້າຢືນຢັນ'],['packing','ກຳລັງແພັກ'],['shipped','ຈັດສົ່ງແລ້ວ'],['done','ສຳເລັດ']];
+const $=id=>document.getElementById(id),fmt=n=>Math.round(+n||0).toLocaleString('en-US');
+let C=[],S={},tok=localStorage.getItem('jh_tok')||'',P=[],O=[],cur=null,imgs=[],cimgs={};
+const api=(p,o={})=>fetch(CFG.SB_URL+p,{...o,headers:{apikey:CFG.SB_KEY,...(tok?{Authorization:'Bearer '+tok}:{}),'Content-Type':'application/json',...(o.headers||{})}});
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),4000)}
+async function login(){
+ if(!CFG.SB_URL)return toast('ຍັງບໍ່ໄດ້ໃສ່ SB_URL ໃນໄຟລ໌');
+ try{
+  const r=await fetch(CFG.SB_URL+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:CFG.SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:$('em').value.trim(),password:$('pw').value})});
+  const d=await r.json();
+  if(!d.access_token){const m=d.error_description||d.msg||d.message||d.error||'';
+   return toast(/not confirmed/i.test(m)?'ອີເມວຍັງບໍ່ຢືນຢັນ: ໃນ Supabase ເປີດຜູ້ໃຊ້ ແລ້ວກົດ Confirm':/invalid login/i.test(m)?'ອີເມວ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກ (ຫຼື ຍັງບໍ່ໄດ້ສ້າງຜູ້ໃຊ້ໃນ Supabase)':'ເຂົ້າລະບົບບໍ່ໄດ້: '+m)}
+  tok=d.access_token;localStorage.setItem('jh_tok',tok);start()
+ }catch(e){toast('ເຊື່ອມຕໍ່ Supabase ບໍ່ໄດ້: ກວດອິນເຕີເນັດ')}}
+function logout(){tok='';localStorage.removeItem('jh_tok');location.reload()}
+async function load(){
+ const [a,b]=await Promise.all([api('/rest/v1/products?order=id.desc'),api('/rest/v1/orders?order=created_at.desc&limit=3000')]);
+ if(a.status===401||b.status===401)return logout();
+ P=await a.json();O=await b.json();try{const d=await (await api('/rest/v1/settings?key=eq.shop')).json();S=(d[0]&&d[0].value)||{}}catch(e){}if(S.cats&&S.cats.length){CATS.length=0;CATS.push(...S.cats)}try{const c=await (await api('/rest/v1/coupons?order=created_at.desc')).json();C=Array.isArray(c)?c:[]}catch(e){C=[]}drawAll();drawSet()}
+async function start(){$('login').classList.add('hide');$('app').classList.remove('hide');$('f-cat').innerHTML=CATS.map(c=>`<option>${c}</option>`).join('');try{await load()}catch(e){toast('ເຊື່ອມຕໍ່ Supabase ບໍ່ໄດ້')}}
+function tab(n,el){['dash','prod','sale','ord','cp','set'].forEach(v=>$('v-'+v).classList.toggle('hide',v!==n));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===el))}
+function drawAll(){drawDash();drawProd();drawSale();drawOrd();drawCp()}
+const th=(u,e='✱')=>`<div class="th" style="${u?`background-image:url('${u}')`:''}">${u?'':e}</div>`;
+let wkOff=0;
+const wkStart=d=>{const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
+const dm=d=>d.toLocaleDateString('lo-LA',{day:'numeric',month:'short'});
+const kipOf=o=>(+o.total||0)*(+o.rate||+S.rate||700);
+const sumB=a=>a.reduce((t,o)=>t+(+o.total||0),0),sumK=a=>a.reduce((t,o)=>t+kipOf(o),0);
+function wkRange(){const s=wkStart(new Date());s.setDate(s.getDate()+wkOff*7);const e=new Date(s);e.setDate(e.getDate()+7);return[s,e]}
+const inWeek=o=>{const[s,e]=wkRange(),d=new Date(o.created_at);return d>=s&&d<e};
+function weekBar(){const[s,e]=wkRange();return `<div class="box" style="display:flex;align-items:center;gap:10px"><button class="btn" onclick="wkMove(-1)" aria-label="ອາທິດກ່ອນ">‹</button><div class="grow" style="text-align:center"><b>${wkOff===0?'ອາທິດນີ້ (ເລີ່ມໃໝ່ທຸກ 7 ວັນ)':wkOff===-1?'ອາທິດແລ້ວ':'ຍ້ອນຫຼັງ '+(-wkOff)+' ອາທິດ'}</b><div class="mute">${dm(s)} – ${dm(new Date(+e-864e5))}</div></div><button class="btn" ${wkOff>=0?'disabled style="opacity:.3"':''} onclick="wkMove(1)" aria-label="ອາທິດຖັດໄປ">›</button></div>`}
+function wkMove(d){wkOff=Math.min(0,wkOff+d);drawDash();drawOrd()}
+const stat=(b,k,l)=>`<div class="stat"><b>฿${fmt(b)}</b><b style="font-size:16px">${fmt(k)} KIP</b><span>${l}</span></div>`;
+function drawDash(){
+ const[s]=wkRange(),cur0=wkStart(new Date()),inWk=O.filter(inWeek),n=inWk.length;
+ const days=[...Array(7)].map((_,i)=>{const a=new Date(s);a.setDate(a.getDate()+i);const b=new Date(a);b.setDate(b.getDate()+1);const L=O.filter(o=>{const d=new Date(o.created_at);return d>=a&&d<b});return{a,v:sumB(L),k:sumK(L)}});
+ const mx=Math.max(1,...days.map(d=>d.v)),wk={};
+ O.forEach(o=>{const k=wkStart(new Date(o.created_at)).getTime();wk[k]=wk[k]||{v:0,k:0,n:0};wk[k].v+=+o.total||0;wk[k].k+=kipOf(o);wk[k].n++});
+ const hist=Object.keys(wk).sort((a,b)=>b-a),low=P.filter(p=>p.stock<=3);
+ const kipPaid=inWk.filter(o=>o.currency==='KIP'),thbPaid=inWk.filter(o=>o.currency!=='KIP');
+ $('v-dash').innerHTML=weekBar()+`<div class="cards">${stat(sumB(inWk),sumK(inWk),'ຍອດຂາຍອາທິດນີ້')}<div class="stat"><b>${n}</b><span>ອໍເດີ</span></div>${stat(n?sumB(inWk)/n:0,n?sumK(inWk)/n:0,'ສະເລ່ຍຕໍ່ອໍເດີ')}${stat(sumB(O),sumK(O),'ຍອດສະສົມທັງໝົດ')}</div>
+ <div class="box"><b>ລູກຄ້າໂອນເງິນອາທິດນີ້</b><div class="row"><div class="grow">ໂອນເປັນກີບ (KIP)<div class="mute">${kipPaid.length} ອໍເດີ</div></div><b>${fmt(sumK(kipPaid))} KIP</b></div><div class="row"><div class="grow">ໂອນເປັນບາດ (BAHT)<div class="mute">${thbPaid.length} ອໍເດີ</div></div><b>฿${fmt(sumB(thbPaid))}</b></div></div>
+ <div class="box">${days.map(d=>`<div class="row"><span style="width:52px">${dm(d.a)}</span><div class="grow"><div style="height:14px;border-radius:7px;background:var(--sale);width:${d.v/mx*100}%;min-width:${d.v?4:0}px"></div></div><div style="text-align:right"><b>฿${fmt(d.v)}</b><div class="mute">${fmt(d.k)} KIP</div></div></div>`).join('')}</div>
+ <div class="box"><b>ຍອດຂາຍຍ້ອນຫຼັງລາຍອາທິດ (ແຕະເພື່ອເບິ່ງ)</b>${hist.map(k=>{const s2=new Date(+k),e2=new Date(+k+6*864e5),off=Math.round((+k-cur0)/6048e5);return `<div class="row" style="cursor:pointer" onclick="wkOff=${off};drawDash();drawOrd();scrollTo(0,0)"><div class="grow">${dm(s2)} – ${dm(e2)}<div class="mute">${wk[k].n} ອໍເດີ</div></div><div style="text-align:right"><b>฿${fmt(wk[k].v)}</b><div class="mute">${fmt(wk[k].k)} KIP</div></div></div>`}).join('')||'<p class="mute">ຍັງບໍ່ມີຂໍ້ມູນ</p>'}</div>
+ <div class="box"><b>ລໍຖ້າຢືນຢັນ ${O.filter(o=>o.status==='pending').length} ອໍເດີ · ສະຕ໊ອກຕ່ຳ (≤3) ${low.length} ລາຍການ</b>${low.map(p=>`<div class="row">${th(p.images&&p.images[0])}<div class="grow">${p.name}</div><b>${p.stock}</b></div>`).join('')}</div>`}
+function drawCp(){$('cplist').innerHTML=C.map(c=>`<div class="row"><div class="grow"><b>${c.code}</b> <span class="pill ${c.active?'':'off'}">${c.active?'ໃຊ້ງານ':'ປິດ'}</span><div class="mute">${c.type==='percent'?c.value+'%':'฿'+fmt(c.value)} · ໃຊ້ແລ້ວ ${c.used_count||0}${c.max_uses?'/'+c.max_uses:''}${c.expires_at?' · ໝົດ '+c.expires_at:''}</div></div><button class="btn" onclick="togCp('${c.code}',${!c.active})">${c.active?'ປິດ':'ເປີດ'}</button><button class="btn bad" onclick="delCp('${c.code}')">ລຶບ</button></div>`).join('')||'<p class="mute">ຍັງບໍ່ມີໂຄ້ດ</p>'}
+async function saveCp(){
+ const code=$('c-code').value.trim().toUpperCase().replace(/\s/g,''),v=+$('c-val').value,ty=$('c-type').value;
+ if(!code||!v)return toast('ໃສ່ໂຄ້ດ ແລະ ມູນຄ່າ');if(ty==='percent'&&v>100)return toast('ເປີເຊັນຕ້ອງບໍ່ເກີນ 100');
+ const r=await api('/rest/v1/coupons',{method:'POST',body:JSON.stringify({code,type:ty,value:v,expires_at:$('c-exp').value||null,max_uses:+$('c-max').value||null,active:true})});
+ if(!r.ok)return toast('ບັນທຶກບໍ່ສຳເລັດ (ໂຄ້ດຊ້ຳ ຫຼື ຍັງບໍ່ໄດ້ແລ່ນ SQL)');
+ ['c-code','c-val','c-exp','c-max'].forEach(i=>$(i).value='');toast('ສ້າງໂຄ້ດແລ້ວ ✓');load()}
+async function togCp(c,a){await api('/rest/v1/coupons?code=eq.'+encodeURIComponent(c),{method:'PATCH',body:JSON.stringify({active:a})});load()}
+async function delCp(c){if(!confirm('ລຶບໂຄ້ດ '+c+'?'))return;await api('/rest/v1/coupons?code=eq.'+encodeURIComponent(c),{method:'DELETE'});load()}
+function drawProd(){
+ const q=$('ps').value.trim().toLowerCase();
+ $('plist').innerHTML=P.filter(p=>!q||(p.name+' '+(p.barcode||'')).toLowerCase().includes(q)).map(p=>`<div class="row">${th(p.images&&p.images[0])}<div class="grow"><b>${p.name}</b><div class="mute">${p.category||''} · ສະຕ໊ອກ ${p.stock} · ${(p.images||[]).length} ຮູບ</div><div>฿${fmt(p.sale_price||p.price)} ${p.sale_price?`<span class="pill">ຫຼຸດ</span>`:''} <span class="pill ${p.visible?'':'off'}">${p.visible?'ສະແດງ':'ເຊື່ອງ'}</span></div></div><button class="btn" onclick="editProd(${p.id})">ແກ້ໄຂ</button></div>`).join('')||'<p class="mute">ຍັງບໍ່ມີສິນຄ້າ. ກົດ "+ ເພີ່ມສິນຄ້າ"</p>'}
+function drawSale(){
+ $('slist').innerHTML=P.map(p=>`<div class="row">${th(p.images&&p.images[0])}<div class="grow"><b>${p.name}</b><div class="mute">ລາຄາປົກກະຕິ ฿${fmt(p.price)}</div></div><input style="width:100px" type="number" inputmode="decimal" placeholder="ລາຄາຫຼຸດ" value="${p.sale_price||''}" onchange="setSale(${p.id},this.value)"></div>`).join('')}
+async function setSale(id,v){const pp=P.find(x=>x.id===id);if(v&&pp&&+v>=+pp.price){toast('ລາຄາຫຼຸດຕ້ອງຕ່ຳກວ່າລາຄາປົກກະຕິ');return drawSale()}const r=await api('/rest/v1/products?id=eq.'+id,{method:'PATCH',body:JSON.stringify({sale_price:v?+v:null})});toast(r.ok?'ບັນທຶກແລ້ວ ✓':'ບັນທຶກບໍ່ສຳເລັດ');load()}
+function editProd(id){
+ cur=P.find(p=>p.id===id)||null;const p=cur||{colors:[],sizes:[],images:[],color_images:{},visible:true,stock:0};
+ $('mt').textContent=cur?'ແກ້ໄຂສິນຄ້າ':'ເພີ່ມສິນຄ້າ';$('delBtn').classList.toggle('hide',!cur);
+ $('f-name').value=p.name||'';$('f-price').value=p.price??'';$('f-sale').value=p.sale_price??'';$('f-cost').value=p.cost??'';$('f-stock').value=p.stock??0;
+ $('f-cat').innerHTML=CATS.map(c=>`<option>${c}</option>`).join('');if(p.category&&!CATS.includes(p.category))$('f-cat').insertAdjacentHTML('beforeend',`<option>${p.category}</option>`);$('f-cat').value=p.category||CATS[0];$('f-bar').value=p.barcode||'';$('f-colors').value=(p.colors||[]).join(', ');$('f-sizes').value=(p.sizes||[]).join(', ');
+ $('f-desc').value=p.description||'';$('f-new').checked=!!p.is_new;$('f-vis').checked=p.visible!==false;
+ imgs=[...(p.images||[])];cimgs={};Object.entries(p.color_images||{}).forEach(([k,v])=>cimgs[k]=Array.isArray(v)?[...v]:(v?[v]:[]));drawImgs();drawColorImgs();$('m-prod').classList.add('on')}
+const list=s=>s.split(',').map(t=>t.trim()).filter(Boolean);
+function drawImgs(){$('imgs').innerHTML=imgs.map((u,i)=>`<div class="th" style="background-image:url('${u}')" onclick="imgs.unshift(imgs.splice(${i},1)[0]);drawImgs()">${i?'':'<i>ຮູບຫຼັກ</i>'}<button onclick="event.stopPropagation();imgs.splice(${i},1);drawImgs()" aria-label="ລຶບຮູບ">✕</button></div>`).join('')}
+const cname=i=>list($('f-colors').value)[i];
+function cdel(i,k){cimgs[cname(i)].splice(k,1);drawColorImgs()}
+function cmain(i,k){const a=cimgs[cname(i)];a.unshift(a.splice(k,1)[0]);drawColorImgs()}
+function drawColorImgs(){
+ const cs=list($('f-colors').value);
+ $('cimgs').innerHTML=cs.map((c,i)=>{const a=cimgs[c]||[];return `<div class="box"><b>${c}</b> <span class="mute">· ${a.length} ຮູບ</span><div class="imgs">${a.map((u,k)=>`<div class="th" style="background-image:url('${u}')" onclick="cmain(${i},${k})">${k?'':'<i>ຮູບຫຼັກ</i>'}<button onclick="event.stopPropagation();cdel(${i},${k})" aria-label="ລຶບຮູບ">✕</button></div>`).join('')}</div><input type="file" accept="image/*" multiple onchange="upColor(${i},this)" style="margin-top:8px"></div>`}).join('')||'<p class="mute">ໃສ່ຊື່ສີກ່ອນ ຈຶ່ງຈະໃສ່ຮູບຕາມສີໄດ້</p>'}
+function shrink(f){return new Promise(r=>{const i=new Image();i.onload=()=>{const s=Math.min(1,1400/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0,c.width,c.height);c.toBlob(b=>r(b||f),'image/jpeg',.85)};i.onerror=()=>r(f);i.src=URL.createObjectURL(f)})}
+async function up(f){const b=await shrink(f),p=`${Date.now()}-${Math.random().toString(36).slice(2,7)}.jpg`,r=await api('/storage/v1/object/products/'+p,{method:'POST',body:b,headers:{'Content-Type':'image/jpeg'}});if(!r.ok)throw 0;return `${CFG.SB_URL}/storage/v1/object/public/products/${p}`}
+async function upImgs(el){const fs=[...el.files];for(let i=0;i<fs.length;i++){toast(`ກຳລັງອັບໂຫຼດ ${i+1}/${fs.length}…`);try{imgs.push(await up(fs[i]));drawImgs()}catch(e){toast('ອັບໂຫຼດບໍ່ສຳເລັດ: '+fs[i].name)}}el.value='';toast('ອັບໂຫຼດແລ້ວ ✓')}
+async function upColor(i,el){const c=cname(i),fs=[...el.files];if(!c)return;cimgs[c]=cimgs[c]||[];
+ for(let n=0;n<fs.length;n++){toast(`ກຳລັງອັບໂຫຼດ ${n+1}/${fs.length}…`);try{cimgs[c].push(await up(fs[n]));drawColorImgs()}catch(e){toast('ອັບໂຫຼດບໍ່ສຳເລັດ: '+fs[n].name)}}
+ toast('ອັບໂຫຼດແລ້ວ ✓')}
+async function saveProd(){
+ const cs=list($('f-colors').value),name=$('f-name').value.trim();
+ if(!name||!$('f-price').value)return toast('ໃສ່ຊື່ ແລະ ລາຄາ');
+ if($('f-sale').value&&+$('f-sale').value>=+$('f-price').value)return toast('ລາຄາຫຼຸດຕ້ອງຕ່ຳກວ່າລາຄາປົກກະຕິ');
+ Object.keys(cimgs).forEach(k=>{if(!cs.includes(k))delete cimgs[k]});
+ const o={name,price:+$('f-price').value,sale_price:$('f-sale').value?+$('f-sale').value:null,cost:+$('f-cost').value||0,stock:+$('f-stock').value||0,category:$('f-cat').value,barcode:$('f-bar').value.trim()||null,colors:cs,sizes:list($('f-sizes').value),images:imgs,color_images:cimgs,description:$('f-desc').value.trim(),is_new:$('f-new').checked,visible:$('f-vis').checked};
+ const r=await api(cur?'/rest/v1/products?id=eq.'+cur.id:'/rest/v1/products',{method:cur?'PATCH':'POST',body:JSON.stringify(o)});
+ if(!r.ok)return toast('ບັນທຶກບໍ່ສຳເລັດ');$('m-prod').classList.remove('on');toast('ບັນທຶກແລ້ວ ✓');load()}
+async function delProd(){if(!cur||!confirm('ລຶບສິນຄ້ານີ້ຖາວອນ?'))return;await api('/rest/v1/products?id=eq.'+cur.id,{method:'DELETE'});$('m-prod').classList.remove('on');toast('ລຶບແລ້ວ');load()}
+function drawOrd(){
+ const f=$('of').value,wl=O.filter(inWeek);$('owk').innerHTML=weekBar()+`<div class="mute" style="margin:0 4px 8px">${wl.length} ອໍເດີ · ฿${fmt(sumB(wl))} ≈ ${fmt(sumK(wl))} KIP</div>`;
+ $('olist').innerHTML=wl.filter(o=>!f||o.status===f).map(o=>`<div class="box"><div style="display:flex;justify-content:space-between"><b>#${o.id} · ${o.name}</b><b>฿${fmt(o.total)}</b></div>
+ <div class="mute">${new Date(o.created_at).toLocaleString('lo-LA')} · ${o.carrier||''} · ຊຳລະ ${o.currency}${+o.discount?` · ໂຄ້ດ ${o.coupon_code} (−฿${fmt(o.discount)})`:''}</div>
+ <div style="margin:6px 0"><a href="https://api.whatsapp.com/send?phone=${(o.phone||'').replace(/\D/g,'')}" target="_blank" rel="noopener">${o.phone}</a> · ${o.address}</div>
+ <div class="mute">${(o.items||[]).map(i=>`${i.name} (${i.color}/${i.size}) ×${i.qty}`).join('<br>')}</div>
+ <div style="display:flex;gap:8px;margin-top:10px;align-items:center"><select onchange="setStatus(${o.id},this.value)">${ST.map(s=>`<option value="${s[0]}" ${s[0]===o.status?'selected':''}>${s[1]}</option>`).join('')}</select>
+ ${o.slip_url?`<a class="btn alt" href="${o.slip_url}" target="_blank" rel="noopener">ສະລິບ</a>`:''}<button class="btn" onclick="printOrder(${o.id})">ພິມ</button></div>
+ <div style="margin-top:12px"><b style="font-size:14px">ບິນສຳລັບລູກຄ້າ (ຮູບ)</b>${o.bill_url?`<div class="row" style="border:0"><a href="${o.bill_url}" target="_blank" rel="noopener"><div class="th" style="background-image:url('${o.bill_url}')"></div></a><div class="grow mute">ອັບໂຫຼດແລ້ວ · ລູກຄ້າເຫັນໃນ "ອໍເດີຂອງຂ້ອຍ"</div><button class="btn bad" onclick="delBill(${o.id})">ລຶບ</button></div>`:''}
+ <input type="file" accept="image/*" onchange="upBill(${o.id},this)" style="margin-top:6px"><div class="mute" style="margin-top:4px">${o.bill_url?'ເລືອກຮູບໃໝ່ເພື່ອປ່ຽນບິນ':'ເລືອກຮູບບິນເພື່ອສົ່ງໃຫ້ລູກຄ້າ'}</div></div></div>`).join('')||'<p class="mute" style="padding:16px 0">ບໍ່ມີອໍເດີໃນອາທິດນີ້ (ກົດ ‹ ເພື່ອເບິ່ງຍ້ອນຫຼັງ)</p>'}
+async function upBill(id,el){if(!el.files[0])return;toast('ກຳລັງອັບໂຫຼດບິນ…');
+ try{const u=await up(el.files[0]),r=await api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',body:JSON.stringify({bill_url:u})});if(!r.ok)throw 0;toast('ອັບໂຫຼດບິນແລ້ວ ✓ ລູກຄ້າເຫັນທັນທີ');load()}
+ catch(e){toast('ອັບໂຫຼດບິນບໍ່ສຳເລັດ (ກວດວ່າໄດ້ແລ່ນ SQL ເພີ່ມ bill_url ແລ້ວ)')}}
+async function delBill(id){if(!confirm('ລຶບບິນນີ້?'))return;await api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',body:JSON.stringify({bill_url:null})});toast('ລຶບແລ້ວ');load()}
+async function setStatus(id,v){const r=await api('/rest/v1/orders?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:v})});toast(r.ok?'ອັບເດດສະຖານະແລ້ວ ✓':'ບໍ່ສຳເລັດ');load()}
+function printOrder(id){const o=O.find(x=>x.id===id),w=open('','_blank');
+ w.document.write(`<meta charset="utf-8"><body style="font-family:sans-serif;max-width:320px"><h3>JUMERS HOUSE ✱</h3><p>ອໍເດີ #${o.id}<br>${o.name} · ${o.phone}<br>${o.address}<br>ຂົນສົ່ງ: ${o.carrier||''}</p><hr>${(o.items||[]).map(i=>`<p>${i.name} (${i.color}/${i.size}) ×${i.qty}</p>`).join('')}<hr>${+o.discount?`<p>ສ່ວນຫຼຸດ ${o.coupon_code}: −฿${fmt(o.discount)}</p>`:''}<b>ລວມ ฿${fmt(o.total)}</b>`);w.document.close();w.print()}
+function drawSet(){
+ $('s-kacc').value=S.kip_account||'';$('s-tacc').value=S.thb_account||'';$('s-rate').value=S.rate||700;
+ $('s-car').value=(S.carriers||['ຮຸ່ງອາລຸນ','ອານຸສິດ','ມີໄຊ']).join(', ');$('s-cats').value=(S.cats||CATS).join(', ');drawQR()}
+function drawQR(){['kip_qr','thb_qr'].forEach(k=>$('s-'+k).innerHTML=S[k]?`<img src="${S[k]}" alt="QR" style="max-width:180px;border-radius:12px;display:block;margin:6px 0">`:'<p class="mute">ຍັງບໍ່ມີ QR</p>')}
+async function upQR(k,el){if(!el.files[0])return;toast('ກຳລັງອັບໂຫຼດ…');try{S[k]=await up(el.files[0]);drawQR();toast('ອັບໂຫຼດແລ້ວ — ກົດ "ບັນທຶກ" ເພື່ອໃຊ້ງານ')}catch(e){toast('ອັບໂຫຼດບໍ່ສຳເລັດ')}}
+async function saveSet(){
+ S={...S,kip_account:$('s-kacc').value.trim(),thb_account:$('s-tacc').value.trim(),rate:+$('s-rate').value||700,carriers:list($('s-car').value),cats:list($('s-cats').value)};if(S.cats.length){CATS.length=0;CATS.push(...S.cats)}
+ const r=await api('/rest/v1/settings',{method:'POST',headers:{Prefer:'resolution=merge-duplicates'},body:JSON.stringify({key:'shop',value:S})});
+ toast(r.ok?'ບັນທຶກແລ້ວ ✓ ໜ້າຮ້ານຈະໃຊ້ຄ່າໃໝ່ທັນທີ':'ບັນທຶກບໍ່ສຳເລັດ (ກວດວ່າໄດ້ສ້າງຕາຕະລາງ settings ແລ້ວ)')}
+if(tok&&CFG.SB_URL)start();
+</script>
+</body>
+</html>
